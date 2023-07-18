@@ -1,0 +1,40 @@
+.product-page-title {
+    border-left: 12px solid #000000;
+    margin-left: 10px;
+    margin-top: 15px;
+    padding: 5px 10px 5px 10px;
+    font-weight: bold;
+    font-size: 20px;
+}
+.product-title:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+.button {
+    border-radius: 10px;
+    width: 36px;
+}
+.count {
+    border-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    user-select: none;
+}
+.shopping-cart-icon {
+    width: 30px;
+    height: 33px;
+    transition: 0.5s;
+ }
+.shopping-cart-icon:hover {
+    transform: rotate(360deg);
+    cursor: pointer;
+}
+.card-image {
+    cursor: pointer;
+    transition: 2s;
+}
+.card-image:hover {
+    transform: scale(0.9);
+}
+.carousel-indicators,.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: transparent;
+}
