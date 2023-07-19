@@ -16,6 +16,7 @@ import godzilla4 from "../../../assets/Godzilla-2nd Form-2016.png"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCartShopping} from "@fortawesome/free-solid-svg-icons";
 import {ProductDetailData} from "../../../data/dto/ProductDetailData.ts";
+import React from "react";
 
 const productPhotoMapping: {[key: number]: string} = {
     1 : anguirus,
@@ -35,6 +36,8 @@ const productPhotoMapping: {[key: number]: string} = {
 
 type Props = {
     productDetailData: ProductDetailData | undefined
+    quantity: number
+    setQuantity: React.Dispatch<React.SetStateAction<number>>
 }
 
 export default function ProductDetailComponent(props: Props) {
@@ -46,6 +49,27 @@ export default function ProductDetailComponent(props: Props) {
         }
         else {
             return "OUT OF STOCK"
+        }
+    }
+
+    const renderButtonQuantity = () => {
+        if(props.productDetailData?.stock) {
+            return <span className={"count bg-white"} style={{marginLeft: "5px", marginRight: "5px"}}>{props.quantity}</span>;
+        }
+        else {
+            return <span className={"count bg-white"} style={{marginLeft: "5px", marginRight: "5px"}}>0</span>;
+        }
+    }
+
+    const handlePlusButton = () => {
+        if(props.productDetailData?.stock && props.productDetailData.stock > props.quantity) {
+            props.setQuantity((state) => (state + 1));
+        }
+    }
+
+    const handleMinusButton = () => {
+        if(props.quantity > 1) {
+            props.setQuantity((state) => (state - 1));
         }
     }
 
@@ -78,9 +102,15 @@ export default function ProductDetailComponent(props: Props) {
                                     </Card.Text>
                                     <div className="bg-white" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                                         <div className="bg-white" style={{ display: 'flex', alignItems: 'center' }}>
-                                            <Button style={{borderRadius: "10px", width: "50px", height: "50px"}} variant="dark">+</Button>
-                                            <span className={"count bg-white"} style={{marginLeft: "5px", marginRight: "5px"}}>0</span>
-                                            <Button style={{borderRadius: "10px", width: "50px", height: "50px"}} variant="dark">-</Button>
+                                            <Button
+                                                style={{borderRadius: "10px", width: "50px", height: "50px"}}
+                                                variant="dark"
+                                                onClick={handlePlusButton}>+</Button>
+                                            {renderButtonQuantity()}
+                                            <Button
+                                                style={{borderRadius: "10px", width: "50px", height: "50px"}}
+                                                variant="dark"
+                                                onClick={handleMinusButton}>-</Button>
                                         </div>
                                         <div className="bg-white" style={{ display: 'flex', alignItems: 'center' }}>
                                             <FontAwesomeIcon className={"shopping-cart-icon"} icon={faCartShopping} style={{color: "#000000",backgroundColor: "white"}} />

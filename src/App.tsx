@@ -2,6 +2,7 @@ import {createHashRouter, RouterProvider} from "react-router-dom";
 import ProductListPage from "./ui/page/ProductListPage/ProductListPage.tsx";
 import ProductDetailPage from "./ui/page/ProductDetailPage/ProductDetailPage.tsx";
 import ErrorPage from "./ui/page/ErrorPage/ErrorPage.tsx";
+import LoginPage from "./ui/page/LoginPage/LoginPage.tsx";
 
 const router = createHashRouter([
     {
@@ -12,18 +13,14 @@ const router = createHashRouter([
         path: "/product/:productId",
         element: <ProductDetailPage/>
     },
-    {
-        path: "/error",
-        element: <ErrorPage/>
-    }
     // {
     //     path: "/shoppingcart",
     //     element: <ShoppingCart/>
     // },
-    // {
-    //     path: "/login",
-    //     element: <LoginPage/>
-    // },
+    {
+        path: "/login",
+        element: <LoginPage/>
+    },
     // {
     //     path: "/checkout/:transactionId",
     //     element: <Checkout/>
@@ -32,6 +29,10 @@ const router = createHashRouter([
     //     path: "/thankyou",
     //     element: <ThankYou/>
     // }
+    {
+        path: "/error",
+        element: <ErrorPage/>
+    }
 ])
 
 export default function App() {

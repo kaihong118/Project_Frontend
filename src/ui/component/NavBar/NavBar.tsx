@@ -2,8 +2,14 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import {Button, Form} from "react-bootstrap";
+import {useNavigate} from "react-router-dom";
 
 export default function NavBar () {
+    const navigate = useNavigate();
+
+    const navigateLoginPage = () => {
+        navigate("/login")
+    }
 
     return (
         <>
@@ -39,7 +45,8 @@ export default function NavBar () {
                         <Nav.Item style={{backgroundColor: "black"}}>
                             <Nav.Link
                                 eventKey="link-1"
-                                style={{marginLeft: "90px", marginRight: "20px"}}>
+                                style={{marginLeft: "90px", marginRight: "20px"}}
+                                onClick={navigateLoginPage}>
                                 Sign in
                             </Nav.Link>
                         </Nav.Item>

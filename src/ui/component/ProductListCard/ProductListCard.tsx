@@ -1,4 +1,4 @@
-import {Button, Card, Col} from "react-bootstrap";
+import {Card, Col} from "react-bootstrap";
 import {ProductListData} from "../../../data/dto/ProductListData.ts";
 
 import anguirus from "../../../assets/Anguirus.png";
@@ -16,7 +16,7 @@ import godzilla3 from "../../../assets/Godzilla-3rd Form-2016.png"
 import godzilla4 from "../../../assets/Godzilla-2nd Form-2016.png"
 import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBell, faCartShopping} from "@fortawesome/free-solid-svg-icons";
+import {faBell} from "@fortawesome/free-solid-svg-icons";
 
 const productPhotoMapping: {[key: number]: string} = {
     1 : anguirus,
@@ -41,7 +41,7 @@ type Props = {
 export default function ProductListCard (props: Props) {
     const navigate = useNavigate();
 
-    const ProductDetailNavigate = () => {
+    const productDetailNavigate = () => {
         navigate(`/product/${props.productData.pid}`)
     }
     return (
@@ -52,26 +52,16 @@ export default function ProductListCard (props: Props) {
                         className="card-image"
                         variant="top"
                         src={productPhotoMapping[props.productData.pid]}
-                        onClick={ProductDetailNavigate} />
+                        onClick={productDetailNavigate} />
                     <Card.Body>
                         <Card.Title
                             className="product-title"
                             style={{fontWeight: "bolder"}}
-                            onClick={ProductDetailNavigate}>
+                            onClick={productDetailNavigate}>
                             {props.productData.name}
                         </Card.Title>
-                        <Card.Text>
+                        <Card.Text style={{fontSize: "14px"}}>
                             {`HK$${props.productData.price.toLocaleString(undefined, {minimumFractionDigits: 2})}`}
-                        </Card.Text>
-                        <Card.Text>
-                            <span className={"d-flex justify-content-between align-items-center"}>
-                                <span>
-                                    <Button className={"button"} variant="dark">+</Button>
-                                    <span className={"count"}>0</span>
-                                    <Button className={"button"} variant="dark">-</Button>
-                                </span>
-                                <FontAwesomeIcon className={"shopping-cart-icon"} icon={faCartShopping} style={{color: "#000000",}} />
-                            </span>
                         </Card.Text>
                     </Card.Body>
                     <Card.Footer className={"d-flex justify-content-between align-items-center"} style={{borderTop: "2px solid #666362", fontWeight: "bolder", color: "red", backgroundColor: "transparent"}}>

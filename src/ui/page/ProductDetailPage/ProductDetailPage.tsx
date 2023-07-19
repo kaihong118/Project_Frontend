@@ -6,10 +6,12 @@ import {useEffect, useState} from "react";
 import {ProductDetailData} from "../../../data/dto/ProductDetailData.ts";
 import {useNavigate, useParams} from "react-router-dom";
 import * as GetProductApi from "../../../api/ProductApi.ts"
+import axios from "axios";
 
 
 export default function ProductDetailPage () {
-    const[productDetailData, setProductDetailData] = useState<ProductDetailData | undefined>(undefined)
+    const [quantity, setQuantity] = useState<number>(1)
+    const [productDetailData, setProductDetailData] = useState<ProductDetailData | undefined>(undefined)
     const {productId} = useParams();
     const navigate = useNavigate();
 
@@ -27,12 +29,18 @@ export default function ProductDetailPage () {
 
     useEffect(() => {
         fetchProductDetailData()
+        return () => {
+            axios.CancelToken.source().cancel();
+        }
     },[])
 
     return (
         <>
             <NavBar/>
-            <ProductDetailComponent productDetailData={productDetailData}/>
+            <ProductDetailComponent
+                productDetailData={productDetailData}
+                quantity={quantity}
+                setQuantity={setQuantity}/>
             <Footer/>
         </>
     )
