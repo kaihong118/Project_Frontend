@@ -44,6 +44,7 @@ export default function ProductListCard (props: Props) {
     const productDetailNavigate = () => {
         navigate(`/product/${props.productData.pid}`)
     }
+
     return (
         <>
             <Col style={{width: "300px"}}>

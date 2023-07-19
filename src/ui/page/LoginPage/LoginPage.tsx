@@ -22,9 +22,8 @@ export default function LoginPage () {
 
                                             <form>
 
-                                                <div className="d-flex align-items-center mb-3 pb-1">
-                                                    <i className="fas fa-cubes fa-2x me-3" style={{color: "#ff6219"}}></i>
-                                                    <span className="h1 fw-bold mb-0">Welcome to <br/>Monster Universe</span>
+                                                <div className="mb-4 pb-1">
+                                                    <span className="h2 fw-bold mb-0">Welcome to Monster Universe</span>
                                                 </div>
 
                                                 <h5 className="fw-normal mb-3 pb-3">Sign

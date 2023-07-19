@@ -1,4 +1,3 @@
-// import productListMockData from "./productListResponse.json"
 import {ProductListData} from "../../../data/dto/ProductListData.ts";
 import "./ProductListPage.css"
 import { Row} from "react-bootstrap";
@@ -40,7 +39,7 @@ export default function ProductListPage () {
             catch(error) {
                 navigate("/error")
             }
-        })
+        }, 1500)
     }
 
     useEffect(() => {

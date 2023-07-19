@@ -3,12 +3,18 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import {Button, Form} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
+import {faCartShopping} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export default function NavBar () {
     const navigate = useNavigate();
 
     const navigateLoginPage = () => {
         navigate("/login")
+    }
+
+    const navigateCartPage = () => {
+        navigate("/cart")
     }
 
     return (
@@ -40,12 +46,15 @@ export default function NavBar () {
                     </Form>
 
                     <Nav
-                        className="justify-content-end"
-                        activeKey="/home">
-                        <Nav.Item style={{backgroundColor: "black"}}>
+                        className="justify-content-end">
+                        <Nav.Item className="d-flex justify-content-center align-items-center" style={{backgroundColor: "black"}}>
+                            <Nav.Link className="ms-5" onClick={navigateCartPage}>
+                                <FontAwesomeIcon className={"shopping-cart-icon bg-transparent"} icon={faCartShopping} style={{color: "#ffffff"}} />
+                            </Nav.Link>
+
                             <Nav.Link
                                 eventKey="link-1"
-                                style={{marginLeft: "90px", marginRight: "20px"}}
+                                className="me-3"
                                 onClick={navigateLoginPage}>
                                 Sign in
                             </Nav.Link>

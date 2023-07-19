@@ -10,29 +10,32 @@ import axios from "axios";
 
 
 export default function ProductDetailPage () {
-    const [quantity, setQuantity] = useState<number>(1)
     const [productDetailData, setProductDetailData] = useState<ProductDetailData | undefined>(undefined)
+    const [quantity, setQuantity] = useState<number>(1)
     const {productId} = useParams();
     const navigate = useNavigate();
 
     const fetchProductDetailData = async () => {
         try {
             setProductDetailData(undefined);
-
             const responseData = await GetProductApi.getProductByPid(productId)
             setProductDetailData(responseData)
         }
         catch(error) {
-            navigate("/error")
+            navigate("/error");
         }
     }
 
     useEffect(() => {
+        if(!productId) {
+            return navigate("/error");
+        }
+
         fetchProductDetailData()
         return () => {
             axios.CancelToken.source().cancel();
         }
-    },[])
+    },[productId])
 
     return (
         <>

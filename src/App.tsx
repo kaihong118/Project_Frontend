@@ -3,6 +3,7 @@ import ProductListPage from "./ui/page/ProductListPage/ProductListPage.tsx";
 import ProductDetailPage from "./ui/page/ProductDetailPage/ProductDetailPage.tsx";
 import ErrorPage from "./ui/page/ErrorPage/ErrorPage.tsx";
 import LoginPage from "./ui/page/LoginPage/LoginPage.tsx";
+import ShoppingCartPage from "./ui/page/ShoppingCartPage/ShoppingCartPage.tsx";
 
 const router = createHashRouter([
     {
@@ -13,10 +14,10 @@ const router = createHashRouter([
         path: "/product/:productId",
         element: <ProductDetailPage/>
     },
-    // {
-    //     path: "/shoppingcart",
-    //     element: <ShoppingCart/>
-    // },
+    {
+        path: "/cart",
+        element: <ShoppingCartPage/>
+    },
     {
         path: "/login",
         element: <LoginPage/>
@@ -39,7 +40,6 @@ export default function App() {
     return (
         <>
             <RouterProvider router={router}/>
-            {/*<ProductDetailPage/>*/}
         </>
     )
 }

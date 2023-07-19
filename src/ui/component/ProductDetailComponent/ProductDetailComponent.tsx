@@ -52,12 +52,31 @@ export default function ProductDetailComponent(props: Props) {
         }
     }
 
-    const renderButtonQuantity = () => {
+    const renderQuantity = () => {
         if(props.productDetailData?.stock) {
-            return <span className={"count bg-white"} style={{marginLeft: "5px", marginRight: "5px"}}>{props.quantity}</span>;
-        }
-        else {
-            return <span className={"count bg-white"} style={{marginLeft: "5px", marginRight: "5px"}}>0</span>;
+            return <div className="bg-white" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <div className="bg-white" style={{ display: 'flex', alignItems: 'center' }}>
+                    <Button
+                        style={{borderRadius: "10px", width: "50px", height: "50px"}}
+                        variant="dark"
+                        onClick={handlePlusButton}>+</Button>
+                    <span className={"count bg-white"} style={{marginLeft: "5px", marginRight: "5px"}}>{props.quantity}</span>
+                    <Button
+                        style={{borderRadius: "10px", width: "50px", height: "50px"}}
+                        variant="dark"
+                        onClick={handleMinusButton}>-</Button>
+                </div>
+                <div className="bg-white d-flex justify-content-center align-items-center">
+                    <FontAwesomeIcon
+                        className={"shopping-cart-icon bg-white"}
+                        icon={faCartShopping}
+                        style={{color: "#000000"}} />
+                    <Button
+                        variant="outline-dark ms-3">
+                        Add to Cart
+                    </Button>
+                </div>
+            </div>
         }
     }
 
@@ -100,23 +119,7 @@ export default function ProductDetailComponent(props: Props) {
                                     <Card.Text style={{fontSize: "18px", height: "50px", backgroundColor: "white"}}>
                                         {props.productDetailData?.price && `HK$${props.productDetailData.price.toLocaleString(undefined, {minimumFractionDigits: 2})}`}
                                     </Card.Text>
-                                    <div className="bg-white" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                                        <div className="bg-white" style={{ display: 'flex', alignItems: 'center' }}>
-                                            <Button
-                                                style={{borderRadius: "10px", width: "50px", height: "50px"}}
-                                                variant="dark"
-                                                onClick={handlePlusButton}>+</Button>
-                                            {renderButtonQuantity()}
-                                            <Button
-                                                style={{borderRadius: "10px", width: "50px", height: "50px"}}
-                                                variant="dark"
-                                                onClick={handleMinusButton}>-</Button>
-                                        </div>
-                                        <div className="bg-white" style={{ display: 'flex', alignItems: 'center' }}>
-                                            <FontAwesomeIcon className={"shopping-cart-icon"} icon={faCartShopping} style={{color: "#000000",backgroundColor: "white"}} />
-                                            <Button variant="outline-dark" style={{marginLeft: "10px"}}>Add to Cart</Button>
-                                        </div>
-                                    </div>
+                                    {renderQuantity()}
                                 </Card.Body>
                             </div>
                         </Col>
