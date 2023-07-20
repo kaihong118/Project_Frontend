@@ -4,6 +4,9 @@ import ProductDetailPage from "./ui/page/ProductDetailPage/ProductDetailPage.tsx
 import ErrorPage from "./ui/page/ErrorPage/ErrorPage.tsx";
 import LoginPage from "./ui/page/LoginPage/LoginPage.tsx";
 import ShoppingCartPage from "./ui/page/ShoppingCartPage/ShoppingCartPage.tsx";
+import {createContext, useEffect, useState} from "react";
+import {UserData} from "./data/UserData.ts";
+import * as FirebaseAuthService from "./authService/FirebaseAuthService.ts"
 
 const router = createHashRouter([
     {
@@ -36,10 +39,20 @@ const router = createHashRouter([
     }
 ])
 
+export const loginUserContext = createContext<UserData | null | undefined>(undefined)
+
 export default function App() {
+    const [loginUser, setLoginUser] = useState<UserData | null | undefined>(undefined);
+
+    useEffect(() => {
+        FirebaseAuthService.handleOnAuthStateChanged(setLoginUser)
+    },[])
+
     return (
         <>
-            <RouterProvider router={router}/>
+            <loginUserContext.Provider value={loginUser}>
+                <RouterProvider router={router}/>
+            </loginUserContext.Provider>
         </>
     )
 }

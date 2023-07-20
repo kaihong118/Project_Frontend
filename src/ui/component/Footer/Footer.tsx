@@ -3,6 +3,10 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 
 export default function Footer () {
+    const handleScrollTop = () => {
+        window.scrollTo(0,0);
+    }
+
     return (
         <>
             <footer style={{position: 'fixed', bottom: 0, left: 0, width: '100%'}}>
@@ -30,7 +34,7 @@ export default function Footer () {
                             className="justify-content-end"
                             activeKey="/home">
                             <Nav.Item style={{backgroundColor: "black"}}>
-                                <Nav.Link href={"/"} eventKey="link-1">Back to Top</Nav.Link>
+                                <Nav.Link eventKey="link-1" onClick={handleScrollTop}>Back to Top</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </Container>

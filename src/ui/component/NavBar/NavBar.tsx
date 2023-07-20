@@ -5,8 +5,12 @@ import {Button, Form} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {faCartShopping} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {loginUserContext} from "../../../App.tsx";
+import {useContext} from "react";
+import * as FirebaseAuthService from "../../../authService/FirebaseAuthService.ts"
 
 export default function NavBar () {
+    const loginUser = useContext(loginUserContext)
     const navigate = useNavigate();
 
     const navigateLoginPage = () => {
@@ -15,6 +19,29 @@ export default function NavBar () {
 
     const navigateCartPage = () => {
         navigate("/cart")
+    }
+
+    const handleLogout = () => {
+        FirebaseAuthService.handleSignOut();
+    }
+
+    const renderLoginContext = () => {
+        if(loginUser) {
+            return <Nav.Link
+                eventKey="link-1"
+                className="me-3"
+                onClick={handleLogout}>
+                Sign Out
+            </Nav.Link>
+        }
+        else {
+            return <Nav.Link
+                eventKey="link-1"
+                className="me-3"
+                onClick={navigateLoginPage}>
+                Sign in
+            </Nav.Link>
+        }
     }
 
     return (
@@ -38,7 +65,7 @@ export default function NavBar () {
                         style={{backgroundColor: "transparent"}}>
                         <Form.Control
                             type="search"
-                            placeholder="Prodact Name"
+                            placeholder="Search"
                             className="me-2"
                             aria-label="Search"
                         />
@@ -52,12 +79,7 @@ export default function NavBar () {
                                 <FontAwesomeIcon className={"shopping-cart-icon bg-transparent"} icon={faCartShopping} style={{color: "#ffffff"}} />
                             </Nav.Link>
 
-                            <Nav.Link
-                                eventKey="link-1"
-                                className="me-3"
-                                onClick={navigateLoginPage}>
-                                Sign in
-                            </Nav.Link>
+                            {renderLoginContext()}
                         </Nav.Item>
                     </Nav>
                 </Container>

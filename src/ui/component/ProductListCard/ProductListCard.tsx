@@ -14,6 +14,9 @@ import rodan from "../../../assets/Rodan.png";
 import monsterX from "../../../assets/Monster X.png"
 import godzilla3 from "../../../assets/Godzilla-3rd Form-2016.png"
 import godzilla4 from "../../../assets/Godzilla-2nd Form-2016.png"
+import gigan from "../../../assets/Gigan.png"
+import keizerGhidorah from "../../../assets/Keizer Ghidorah.png"
+import orga from "../../../assets/Orga.png"
 import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBell} from "@fortawesome/free-solid-svg-icons";
@@ -31,7 +34,10 @@ const productPhotoMapping: {[key: number]: string} = {
     10 : rodan,
     11 : monsterX,
     12 : godzilla3,
-    13 : godzilla4
+    13 : godzilla4,
+    14: keizerGhidorah,
+    15: gigan,
+    16: orga
 }
 
 type Props = {

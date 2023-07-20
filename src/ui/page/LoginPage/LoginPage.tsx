@@ -1,13 +1,45 @@
 import NavBar from "../../component/NavBar/NavBar.tsx";
 import Footer from "../../component/Footer/Footer.tsx";
+import React, {useContext, useEffect, useState} from "react";
+import * as FirebaseAuthService from "../../../authService/FirebaseAuthService.ts"
+import {useNavigate} from "react-router-dom";
+import {loginUserContext} from "../../../App.tsx";
 
 export default function LoginPage () {
+    const navigate = useNavigate();
+    const loginUser = useContext(loginUserContext)
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("")
+
+    const handleEmailOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.currentTarget.value);
+    }
+
+    const handlePasswordOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(event.currentTarget.value);
+    }
+
+    const handleSubmit = async (event: React.FormEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        const isLogin = await FirebaseAuthService.handleSignInWithEmailAndPassword(email, password);
+
+        if(isLogin) {
+            navigate("/")
+        }
+    }
+
+    useEffect(() => {
+        if(loginUser) {
+            navigate("/")
+        }
+    },[loginUser])
+
     return (
         <>
             <NavBar/>
             <section className="vh-90">
                 <div className="container py-5 h-100">
-                    <div className="row d-flex justify-content-center align-items-center h-100">
+                    <div className="row d-flex justify-content-center align-items-center h-100" onSubmit={handleSubmit}>
                         <div className="col col-xl-10">
                             <div className="card" style={{borderRadius: "1rem"}}>
                                 <div className="row g-0">
@@ -31,21 +63,25 @@ export default function LoginPage () {
 
                                                 <div className="form-outline mb-4">
                                                     <input type="email" id="form2Example17"
-                                                           className="form-control form-control-lg" style={{marginBottom: "5px"}}/>
+                                                           className="form-control form-control-lg mb-1"
+                                                           value={email}
+                                                           onChange={handleEmailOnChange}/>
                                                     <label className="form-label" htmlFor="form2Example17">Email
                                                         address</label>
                                                 </div>
 
                                                 <div className="form-outline mb-4">
                                                     <input type="password" id="form2Example27"
-                                                           className="form-control form-control-lg" style={{marginBottom: "5px"}}/>
+                                                           className="form-control form-control-lg mb-1"
+                                                           value={password}
+                                                           onChange={handlePasswordOnChange}/>
                                                     <label className="form-label"
                                                            htmlFor="form2Example27">Password</label>
                                                 </div>
 
                                                 <div className="pt-1 mb-4">
                                                     <button className="btn btn-dark btn-lg btn-block"
-                                                            type="button">Login
+                                                            type="submit">Login
                                                     </button>
                                                 </div>
 

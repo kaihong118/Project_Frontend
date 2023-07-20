@@ -13,6 +13,9 @@ import rodan from "../../../assets/Rodan.png";
 import monsterX from "../../../assets/Monster X.png"
 import godzilla3 from "../../../assets/Godzilla-3rd Form-2016.png"
 import godzilla4 from "../../../assets/Godzilla-2nd Form-2016.png"
+import gigan from "../../../assets/Gigan.png"
+import keizerGhidorah from "../../../assets/Keizer Ghidorah.png"
+import orga from "../../../assets/Orga.png"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCartShopping} from "@fortawesome/free-solid-svg-icons";
 import {ProductDetailData} from "../../../data/dto/ProductDetailData.ts";
@@ -31,7 +34,10 @@ const productPhotoMapping: {[key: number]: string} = {
     10 : rodan,
     11 : monsterX,
     12 : godzilla3,
-    13 : godzilla4
+    13 : godzilla4,
+    14: keizerGhidorah,
+    15: gigan,
+    16: orga
 }
 
 type Props = {
@@ -59,12 +65,12 @@ export default function ProductDetailComponent(props: Props) {
                     <Button
                         style={{borderRadius: "10px", width: "50px", height: "50px"}}
                         variant="dark"
-                        onClick={handlePlusButton}>+</Button>
+                        onClick={handleMinusButton}>-</Button>
                     <span className={"count bg-white"} style={{marginLeft: "5px", marginRight: "5px"}}>{props.quantity}</span>
                     <Button
                         style={{borderRadius: "10px", width: "50px", height: "50px"}}
                         variant="dark"
-                        onClick={handleMinusButton}>-</Button>
+                        onClick={handlePlusButton}>+</Button>
                 </div>
                 <div className="bg-white d-flex justify-content-center align-items-center">
                     <FontAwesomeIcon

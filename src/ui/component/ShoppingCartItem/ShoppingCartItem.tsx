@@ -34,14 +34,14 @@ export default function ShoppingCartItem () {
                             <Button
                                 className="border-0 w-25 fw-bold fs-3"
                                 variant="outline-secondary"
-                                onClick={handlePlusButton}>+</Button>
+                                onClick={handleMinusButton}>-</Button>
 
                             <span className={"count d-flex justify-content-center align-items-center bg-transparent w-50 fw-bold"}>{cartItemQuantity}</span>
 
                             <Button
                                 className="border-0 w-25 fw-bold fs-3"
                                 variant="outline-secondary"
-                                onClick={handleMinusButton}>-</Button>
+                                onClick={handlePlusButton}>+</Button>
                         </div>
                         <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1 bg-white">
                             <h5 className="mb-0 bg-white fw-bold">$499.00</h5>
