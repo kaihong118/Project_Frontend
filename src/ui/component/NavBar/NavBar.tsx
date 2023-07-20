@@ -21,8 +21,9 @@ export default function NavBar () {
         navigate("/cart")
     }
 
-    const handleLogout = () => {
-        FirebaseAuthService.handleSignOut();
+    const handleLogout = async () => {
+        await FirebaseAuthService.handleSignOut();
+        navigate("/")
     }
 
     const renderLoginContext = () => {
@@ -78,7 +79,6 @@ export default function NavBar () {
                             <Nav.Link className="ms-5" onClick={navigateCartPage}>
                                 <FontAwesomeIcon className={"shopping-cart-icon bg-transparent"} icon={faCartShopping} style={{color: "#ffffff"}} />
                             </Nav.Link>
-
                             {renderLoginContext()}
                         </Nav.Item>
                     </Nav>

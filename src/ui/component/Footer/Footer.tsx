@@ -18,8 +18,8 @@ export default function Footer () {
                                className={"justify-content-center"}
                                style={{backgroundColor: "black"}}>
                         <Navbar.Brand
-                            href="/"
-                            style={{backgroundColor: "transparent", fontSize: "15px", fontWeight: "bolder"}}>
+                            style={{backgroundColor: "transparent", fontSize: "15px", fontWeight: "bolder"}}
+                            onClick={handleScrollTop}>
                             Monster Universe Limited
                         </Navbar.Brand>
 

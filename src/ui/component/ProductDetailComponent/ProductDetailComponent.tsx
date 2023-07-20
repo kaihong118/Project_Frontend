@@ -19,7 +19,11 @@ import orga from "../../../assets/Orga.png"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCartShopping} from "@fortawesome/free-solid-svg-icons";
 import {ProductDetailData} from "../../../data/dto/ProductDetailData.ts";
-import React from "react";
+import React, {useContext, useState} from "react";
+import * as CartItemApi from "../../../api/CartItemApi.ts"
+import {loginUserContext} from "../../../App.tsx";
+import {useNavigate} from "react-router-dom";
+import {AddCartItemData} from "../../../data/dto/AddCartItemData.ts";
 
 const productPhotoMapping: {[key: number]: string} = {
     1 : anguirus,
@@ -47,6 +51,28 @@ type Props = {
 }
 
 export default function ProductDetailComponent(props: Props) {
+    const [isSuccess, setIsSuccess] = useState<AddCartItemData | undefined>(undefined)
+    const loginUser = useContext(loginUserContext)
+    const navigate = useNavigate();
+
+    const addCartItemApi = async () => {
+        try {
+            if(loginUser) {
+                if(props.productDetailData?.pid) {
+                    setIsSuccess(undefined);
+                    const responseData = await CartItemApi.addCartItem(props.productDetailData.pid, props.quantity);
+                    setIsSuccess(responseData);
+                }
+            }
+            else {
+                navigate("/login");
+            }
+        }
+        catch (error) {
+            navigate("/error")
+        }
+    }
+
     const renderStockQuantity = () => {
         if(props.productDetailData?.stock) {
             if(props.productDetailData.stock > 0) {
@@ -78,7 +104,8 @@ export default function ProductDetailComponent(props: Props) {
                         icon={faCartShopping}
                         style={{color: "#000000"}} />
                     <Button
-                        variant="outline-dark ms-3">
+                        variant="outline-dark ms-3"
+                        onClick={addCartItemApi}>
                         Add to Cart
                     </Button>
                 </div>
@@ -126,6 +153,9 @@ export default function ProductDetailComponent(props: Props) {
                                         {props.productDetailData?.price && `HK$${props.productDetailData.price.toLocaleString(undefined, {minimumFractionDigits: 2})}`}
                                     </Card.Text>
                                     {renderQuantity()}
+                                    {isSuccess && <div className="text-end bg-transparent mt-3 fw-bold pe-2 text-success">
+                                        Item Added
+                                    </div>}
                                 </Card.Body>
                             </div>
                         </Col>
