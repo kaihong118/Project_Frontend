@@ -18,7 +18,12 @@ export default function NavBar () {
     }
 
     const navigateCartPage = () => {
-        navigate("/cart")
+        if(loginUser) {
+            navigate("/cart")
+        }
+        else {
+            navigate("/login")
+        }
     }
 
     const handleLogout = async () => {

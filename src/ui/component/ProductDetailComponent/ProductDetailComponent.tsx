@@ -102,7 +102,8 @@ export default function ProductDetailComponent(props: Props) {
                     <FontAwesomeIcon
                         className={"shopping-cart-icon bg-white"}
                         icon={faCartShopping}
-                        style={{color: "#000000"}} />
+                        style={{color: "#000000"}}
+                        onClick={addCartItemApi}/>
                     <Button
                         variant="outline-dark ms-3"
                         onClick={addCartItemApi}>

@@ -1,4 +1,3 @@
-// import productDetailMockData from "./productDetailResponse.json"
 import NavBar from "../../component/NavBar/NavBar.tsx";
 import Footer from "../../component/Footer/Footer.tsx";
 import ProductDetailComponent from "../../component/ProductDetailComponent/ProductDetailComponent.tsx";

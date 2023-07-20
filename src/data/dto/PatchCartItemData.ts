@@ -1,0 +1,7 @@
+export type PatchCartItemData = {
+    pid:           number;
+    name:          string;
+    price:         number;
+    cart_quantity: number;
+    stock:         number;
+}
