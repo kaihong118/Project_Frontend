@@ -1,6 +1,11 @@
 import CheckoutTableRow from "../CheckoutTableRow/CheckoutTableRow.tsx";
+import {TransactionDetailData} from "../../../data/dto/TransactionDetailData.ts";
 
-export default function CheckoutTable() {
+type Props = {
+    transactionDetailData: TransactionDetailData | undefined
+}
+
+export default function CheckoutTable({transactionDetailData}: Props) {
     return (
         <>
             <thead>
@@ -12,7 +17,10 @@ export default function CheckoutTable() {
             </tr>
             </thead>
             <tbody>
-                <CheckoutTableRow/>
+                {transactionDetailData?.items.map((value) => (
+                    <CheckoutTableRow key={value.tpid}
+                        transactionProduct={value}/>
+                ))}
             </tbody>
         </>
     )

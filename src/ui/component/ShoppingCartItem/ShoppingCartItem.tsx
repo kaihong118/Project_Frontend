@@ -20,6 +20,7 @@ import keizerGhidorah from "../../../assets/Keizer Ghidorah.png";
 import gigan from "../../../assets/Gigan.png";
 import orga from "../../../assets/Orga.png";
 import * as CartItemApi from "../../../api/CartItemApi.ts"
+import {useNavigate} from "react-router-dom";
 
 const productPhotoMapping: {[key: number]: string} = {
     1 : anguirus,
@@ -50,11 +51,17 @@ export default function ShoppingCartItem ({cartItem, cartItemList, setCartItemLi
     const [cartItemState, setCartItemState]= useState<GetCartItemData | undefined>(cartItem)
     const [quantity, setQuantity] = useState<number | undefined>(cartItem?.cart_quantity)
     const [warningText, setWarningText] = useState<string>("")
+    const navigate = useNavigate();
 
     const handlePlusButton = async () => {
         if(cartItem && quantity && quantity + 1 <= cartItem.stock) {
-            cartItem = await CartItemApi.patchCartItem(cartItem.pid, quantity + 1);
-            setQuantity((state) => (state && state + 1));
+            try {
+                cartItem = await CartItemApi.patchCartItem(cartItem.pid, quantity + 1);
+                setQuantity((state) => (state && state + 1));
+            }
+            catch (error) {
+                navigate("/error");
+            }
         }
         else {
             setWarningText("Stock Not Available");
@@ -63,21 +70,36 @@ export default function ShoppingCartItem ({cartItem, cartItemList, setCartItemLi
 
     const handleMinusButton = async () => {
         if(cartItem && quantity && quantity - 1 > 0) {
-            cartItem = await CartItemApi.patchCartItem(cartItem.pid, quantity - 1)
-            setWarningText("")
-            setQuantity((state) => (state && state - 1))
+            try {
+                cartItem = await CartItemApi.patchCartItem(cartItem.pid, quantity - 1)
+                setWarningText("")
+                setQuantity((state) => (state && state - 1))
+            }
+            catch (error) {
+                navigate("/error");
+            }
         }
         else  {
-            await CartItemApi.deleteCartItem(cartItem?.pid);
-            setCartItemState(undefined);
-            setQuantity((state) => (state && state - 1))
+            try {
+                await CartItemApi.deleteCartItem(cartItem?.pid);
+                setCartItemState(undefined);
+                setQuantity((state) => (state && state - 1))
+            }
+            catch (error) {
+                navigate("/error")
+            }
         }
     }
 
     const handleDeleteButton = async () => {
-        await CartItemApi.deleteCartItem(cartItem?.pid);
-        setCartItemState(undefined);
-        setQuantity(0)
+        try {
+            await CartItemApi.deleteCartItem(cartItem?.pid);
+            setCartItemState(undefined);
+            setQuantity(0)
+        }
+        catch (error) {
+            navigate("/error")
+        }
     }
 
     const renderCartItem =() => {

@@ -4,11 +4,15 @@ import "./ShoppingCartPage.css"
 import {useEffect, useState} from "react";
 import {GetCartItemData} from "../../../data/dto/GetCartItemData.ts";
 import * as CartItemApi from "../../../api/CartItemApi.ts"
+import * as TransactionApi from "../../../api/TransactionApi.ts"
 import axios from "axios";
 import ShoppingCartItem from "../../component/ShoppingCartItem/ShoppingCartItem.tsx";
+import {useNavigate} from "react-router-dom";
+import {TransactionDetailData} from "../../../data/dto/TransactionDetailData.ts";
 
 export default function ShoppingCartPage () {
     const [cartItemList, setCartItemList] = useState<GetCartItemData[] | undefined>(undefined);
+    const navigate = useNavigate();
 
     const renderCartItem = () => {
         if(cartItemList) {
@@ -30,11 +34,25 @@ export default function ShoppingCartPage () {
     const renderProcessButton = () => {
         if(cartItemList) {
             return <div className="d-flex justify-content-end bg-white mb-5">
-                <button type="button" className="btn btn-warning btn-lg">Process to Pay</button>
+                <button type="button"
+                        className="btn btn-warning btn-lg"
+                        onClick={handleCheckout}>Process to Pay</button>
             </div>
         }
         else {
             return <></>
+        }
+    }
+
+    const handleCheckout = async () => {
+        try {
+            const transactionDetailData: TransactionDetailData | undefined = await TransactionApi.createTransaction()
+            if(transactionDetailData) {
+                navigate(`/transaction/${transactionDetailData.tid}`)
+            }
+        }
+        catch (error) {
+            navigate("/error")
         }
     }
 
