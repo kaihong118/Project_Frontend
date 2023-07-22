@@ -48,7 +48,7 @@ export default function ShoppingCartPage () {
         try {
             const transactionDetailData: TransactionDetailData | undefined = await TransactionApi.createTransaction()
             if(transactionDetailData) {
-                navigate(`/transaction/${transactionDetailData.tid}`)
+                navigate(`/checkout/${transactionDetailData.tid}`)
             }
         }
         catch (error) {

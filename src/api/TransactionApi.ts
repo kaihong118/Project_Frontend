@@ -9,7 +9,7 @@ export const createTransaction = async () => {
         const accessToken = await FirebaseAuthService.getAccessToken();
 
         if(accessToken) {
-            const response = await axios.put<TransactionDetailData>(`${baseUrl}/transaction/prepare`, {}, { headers: {"Authorization" : `Bearer ${accessToken}`} });
+            const response = await axios.post<TransactionDetailData>(`${baseUrl}/transaction/prepare`, {}, { headers: {"Authorization" : `Bearer ${accessToken}`} });
             return response.data;
         }
     }
