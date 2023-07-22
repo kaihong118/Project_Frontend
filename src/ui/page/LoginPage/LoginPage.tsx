@@ -4,6 +4,9 @@ import React, {useContext, useEffect, useState} from "react";
 import * as FirebaseAuthService from "../../../authService/FirebaseAuthService.ts"
 import {useNavigate} from "react-router-dom";
 import {loginUserContext} from "../../../App.tsx";
+import axios from "axios";
+import {GoogleLoginButton} from "react-social-login-buttons";
+
 
 export default function LoginPage () {
     const navigate = useNavigate();
@@ -28,9 +31,21 @@ export default function LoginPage () {
         }
     }
 
+    const handleGoogleButton = async () => {
+        const isLogin = await FirebaseAuthService.handleSignInWithGoogle();
+
+        if(isLogin) {
+            navigate("/")
+        }
+    }
+
     useEffect(() => {
         if(loginUser) {
             navigate("/")
+        }
+
+        return () => {
+            axios.CancelToken.source().cancel();
         }
     },[loginUser])
 
@@ -84,7 +99,9 @@ export default function LoginPage () {
                                                             type="submit">Login
                                                     </button>
                                                 </div>
-
+                                                    <GoogleLoginButton
+                                                        className="bg-transparent ms-0 "
+                                                        onClick={handleGoogleButton} />
                                             </form>
                                         </div>
                                     </div>

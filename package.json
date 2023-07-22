@@ -23,6 +23,7 @@
     "react-bootstrap": "^2.8.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.1",
+    "react-social-login-buttons": "^3.9.1",
     "sort-by": "^1.2.0"
   },
   "devDependencies": {

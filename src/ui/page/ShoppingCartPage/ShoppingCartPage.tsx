@@ -5,6 +5,7 @@ import ShoppingCartItem from "../../component/ShoppingCartItem/ShoppingCartItem.
 import {useEffect, useState} from "react";
 import {GetCartItemData} from "../../../data/dto/GetCartItemData.ts";
 import * as CartItemApi from "../../../api/CartItemApi.ts"
+import axios from "axios";
 
 export default function ShoppingCartPage () {
     const [cartItemList, setCartItemList] = useState<GetCartItemData[] | undefined>(undefined);
@@ -35,6 +36,17 @@ export default function ShoppingCartPage () {
         }
     }
 
+    const calculateTotal = () => {
+        if(cartItemList) {
+            return cartItemList.reduce((accumulator, value) => {
+                return accumulator + value.price * value.cart_quantity
+            },0);
+        }
+        else {
+            return 0;
+        }
+    }
+
     const fetchCartItemData = async () => {
         setCartItemList([]);
         const responseData = await CartItemApi.getCartItem();
@@ -42,7 +54,13 @@ export default function ShoppingCartPage () {
     }
 
     useEffect ( () => {
+        setTimeout(()=>{
         fetchCartItemData();
+        }, 2000)
+
+        return () => {
+            axios.CancelToken.source().cancel();
+        }
     },[])
 
     return (
@@ -57,6 +75,9 @@ export default function ShoppingCartPage () {
                                 <h3 className="fw-normal mb-0 text-black bg-white fw-bold">Shopping Cart</h3>
                             </div>
                             {renderCartItem()}
+                            <div className="bg-white h5 fw-bolder text-primary ms-2">
+                                {`Total: $${calculateTotal()}`}
+                            </div>
                             {renderProceedToPay()}
                         </div>
                     </div>

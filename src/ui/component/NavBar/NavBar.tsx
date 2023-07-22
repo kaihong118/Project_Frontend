@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import {Button, Form} from "react-bootstrap";
+import {Button, Form, Spinner} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {faCartShopping} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -40,13 +40,18 @@ export default function NavBar () {
                 Sign Out
             </Nav.Link>
         }
-        else {
+        else if(loginUser === null){
             return <Nav.Link
                 eventKey="link-1"
                 className="me-3"
                 onClick={navigateLoginPage}>
                 Sign in
             </Nav.Link>
+        }
+        else {
+            return <Spinner
+                className="ps-3 pe-3"
+                animation="grow"/>
         }
     }
 
