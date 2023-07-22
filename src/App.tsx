@@ -7,6 +7,7 @@ import ShoppingCartPage from "./ui/page/ShoppingCartPage/ShoppingCartPage.tsx";
 import {createContext, useEffect, useState} from "react";
 import {UserData} from "./data/UserData.ts";
 import * as FirebaseAuthService from "./authService/FirebaseAuthService.ts"
+import CheckoutPage from "./ui/page/CheckoutPage/CheckoutPage.tsx";
 
 const router = createHashRouter([
     {
@@ -25,10 +26,10 @@ const router = createHashRouter([
         path: "/login",
         element: <LoginPage/>
     },
-    // {
-    //     path: "/checkout/:transactionId",
-    //     element: <Checkout/>
-    // },
+    {
+        path: "/checkout/:transactionId",
+        element: <CheckoutPage/>
+    },
     // {
     //     path: "/thankyou",
     //     element: <ThankYou/>

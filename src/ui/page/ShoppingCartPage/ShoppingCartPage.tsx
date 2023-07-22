@@ -1,45 +1,61 @@
 import NavBar from "../../component/NavBar/NavBar.tsx";
 import Footer from "../../component/Footer/Footer.tsx";
 import "./ShoppingCartPage.css"
-import ShoppingCartItem from "../../component/ShoppingCartItem/ShoppingCartItem.tsx";
 import {useEffect, useState} from "react";
 import {GetCartItemData} from "../../../data/dto/GetCartItemData.ts";
 import * as CartItemApi from "../../../api/CartItemApi.ts"
 import axios from "axios";
+import ShoppingCartItem from "../../component/ShoppingCartItem/ShoppingCartItem.tsx";
 
 export default function ShoppingCartPage () {
     const [cartItemList, setCartItemList] = useState<GetCartItemData[] | undefined>(undefined);
 
     const renderCartItem = () => {
         if(cartItemList) {
-            return cartItemList.map((value: GetCartItemData) => (
+            return cartItemList.map((cartItem) => (
                 <ShoppingCartItem
-                    key={value.pid}
-                    cartItemBase={value}/>
+                    key={cartItem.pid}
+                    cartItem={cartItem}
+                    cartItemList={cartItemList}
+                    setCartItemList={setCartItemList}/>
             ))
         }
         else {
-            return <div className="fw-normal mb-0 text-black bg-white fw-bold h4 mt-5 mb-5">
-                Empty Cart
+            return <div className=" h1 d-flex justify-content-center align-items-center bg-white opacity-50 user-select-none">
+                Shopp Cart Empty
             </div>
         }
     }
 
-    const renderProceedToPay = () => {
+    const renderProcessButton = () => {
         if(cartItemList) {
-            return <div className="card border-0">
-                <div className="card-body bg-white ps-0">
-                    <button type="button" className="btn btn-warning btn-block btn-lg fw-bold">Proceed to Pay
-                    </button>
-                </div>
+            return <div className="d-flex justify-content-end bg-white mb-5">
+                <button type="button" className="btn btn-warning btn-lg">Process to Pay</button>
             </div>
+        }
+        else {
+            return <></>
+        }
+    }
+
+    const renderTotal = () => {
+        if(cartItemList) {
+            return <div className="float-end bg-white">
+                <p className="mb-0 me-5 d-flex align-items-center bg-white">
+                    <span className="small text-muted me-2 bg-white">Order total:</span> <span
+                    className="lead fw-normal bg-white">{calculateTotal().toLocaleString(undefined, {style: "currency", currency: "HKD"})}</span>
+                </p>
+            </div>
+        }
+        else {
+            return <></>
         }
     }
 
     const calculateTotal = () => {
         if(cartItemList) {
-            return cartItemList.reduce((accumulator, value) => {
-                return accumulator + value.price * value.cart_quantity
+            return cartItemList.reduce((accumulator, cartItem) => {
+                return accumulator + cartItem.price * cartItem.cart_quantity
             },0);
         }
         else {
@@ -54,9 +70,9 @@ export default function ShoppingCartPage () {
     }
 
     useEffect ( () => {
-        setTimeout(()=>{
+        setTimeout(() => {
         fetchCartItemData();
-        }, 2000)
+        }, 3000)
 
         return () => {
             axios.CancelToken.source().cancel();
@@ -66,23 +82,28 @@ export default function ShoppingCartPage () {
     return (
         <>
             <NavBar/>
-            <section className="h-100 p-3">
-                <div className="container h-100 py-5 ">
-                    <div className="row d-flex justify-content-center align-items-center h-100">
-                        <div className="col-12 bg-white" style={{padding: "25px", borderRadius: "16px"}}>
 
-                            <div className="d-flex justify-content-between align-items-center mb-4 bg-white">
-                                <h3 className="fw-normal mb-0 text-black bg-white fw-bold">Shopping Cart</h3>
-                            </div>
+            <section className="vh-100">
+                <div className="container h-100">
+                    <div className="row d-flex justify-content-center align-items-center h-100">
+                        <div className="col bg-white rounded-5 p-5">
+                            <p className="bg-white"><span className="h2 bg-white">Shopping Cart</span></p>
+
                             {renderCartItem()}
-                            <div className="bg-white h5 fw-bolder text-primary ms-2">
-                                {`Total: $${calculateTotal()}`}
+                            <div className="card mb-5 border-0">
+                                <div className="card-body p-4 bg-white">
+
+                                    {renderTotal()}
+
+                                </div>
                             </div>
-                            {renderProceedToPay()}
+                            {renderProcessButton()}
+
                         </div>
                     </div>
                 </div>
             </section>
+
             <Footer/>
         </>
     )

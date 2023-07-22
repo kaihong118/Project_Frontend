@@ -1,7 +1,7 @@
 import {Button} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {GetCartItemData} from "../../../data/dto/GetCartItemData.ts";
 import anguirus from "../../../assets/Anguirus.png";
 import baragon from "../../../assets/Baragon.png";
@@ -20,7 +20,6 @@ import keizerGhidorah from "../../../assets/Keizer Ghidorah.png";
 import gigan from "../../../assets/Gigan.png";
 import orga from "../../../assets/Orga.png";
 import * as CartItemApi from "../../../api/CartItemApi.ts"
-import {PatchCartItemData} from "../../../data/dto/PatchCartItemData.ts";
 
 const productPhotoMapping: {[key: number]: string} = {
     1 : anguirus,
@@ -42,106 +41,138 @@ const productPhotoMapping: {[key: number]: string} = {
 }
 
 type Props = {
-    cartItemBase: GetCartItemData
+    cartItem: GetCartItemData | undefined
+    cartItemList: GetCartItemData[]
+    setCartItemList:  React.Dispatch<React.SetStateAction<GetCartItemData[] | undefined>>
 }
 
-export default function ShoppingCartItem (props: Props) {
-    const [cartItem, setCartItem] = useState<PatchCartItemData | undefined>(undefined)
+export default function ShoppingCartItem ({cartItem, cartItemList, setCartItemList}: Props) {
+    const [cartItemState, setCartItemState]= useState<GetCartItemData | undefined>(cartItem)
+    const [quantity, setQuantity] = useState<number | undefined>(cartItem?.cart_quantity)
     const [warningText, setWarningText] = useState<string>("")
-    const [quantity, setQuantity] = useState<number>(1)
 
     const handlePlusButton = async () => {
-        if(cartItem && (quantity + 1) <= props.cartItemBase.stock) {
-            setQuantity((state) => (state + 1));
-
-            const responseData = await CartItemApi.patchCartItem(cartItem.pid, quantity);
-            setCartItem(responseData);
+        if(cartItem && quantity && quantity + 1 <= cartItem.stock) {
+            cartItem = await CartItemApi.patchCartItem(cartItem.pid, quantity + 1);
+            setQuantity((state) => (state && state + 1));
         }
         else {
-            setWarningText("Stock Not Enough");
+            setWarningText("Stock Not Available");
         }
     }
 
     const handleMinusButton = async () => {
-        if(cartItem && (quantity - 1) > 0) {
-            setQuantity((state) => (state - 1));
-
-            const responseData = await CartItemApi.patchCartItem(cartItem.pid, quantity);
-            setCartItem(responseData);
-            setWarningText("");
+        if(cartItem && quantity && quantity - 1 > 0) {
+            cartItem = await CartItemApi.patchCartItem(cartItem.pid, quantity - 1)
+            setWarningText("")
+            setQuantity((state) => (state && state - 1))
         }
-        else {
-            deleteCartItem();
+        else  {
+            await CartItemApi.deleteCartItem(cartItem?.pid);
+            setCartItemState(undefined);
+            setQuantity((state) => (state && state - 1))
         }
     }
 
-    const deleteCartItem = async () => {
-        await CartItemApi.deleteCartItem(cartItem?.pid)
-        setCartItem(undefined);
+    const handleDeleteButton = async () => {
+        await CartItemApi.deleteCartItem(cartItem?.pid);
+        setCartItemState(undefined);
+        setQuantity(0)
     }
 
     const renderCartItem =() => {
-        if(cartItem) {
+        if(cartItemState) {
             return <>
-                <div className="card mb-4 border-5 rounded-5">
-                    <div className="card-body p-4 bg-white rounded-5">
-                        <div className="row d-flex justify-content-between align-items-center bg-white">
-                            <div className="col-md-2 col-lg-2 col-xl-2 bg-white">
-                                {cartItem?.pid && <img
-                                    src={productPhotoMapping[cartItem.pid]}
-                                    className="img-fluid rounded-3 bg-transparent" alt="product image"/>}
-                            </div>
-                            <div className="col-md-3 col-lg- col-xl-3 bg-white">
-                                {cartItem?.name && <p className="lead fw-normal mb-2 bg-white fw-bold">{cartItem.name}</p>}
+                <div className="card mb-4 border-top-0 border-start-0 border-end-0 border-2 border-secondary">
+                    <div className="card-body p-4 bg-white">
+
+                        <div className="row align-items-center bg-white">
+                            <div className="col-md-2 bg-white">
+                                <img
+                                    src={cartItem && productPhotoMapping[cartItem.pid]}
+                                    className="img-fluid bg-white" alt="Generic placeholder image"/>
                             </div>
 
-                            <div className="col-md-3 col-lg-3 col-xl-2 d-flex bg-white">
-                                <Button
-                                    className="border-0 w-25 fw-bold fs-3 d-flex justify-content-center align-items-center"
-                                    variant="outline-secondary"
-                                    onClick={handleMinusButton}>-</Button>
-
-                                {cartItem?.cart_quantity
-                                    && <span className={"count d-flex justify-content-center align-items-center bg-transparent w-50 fw-bold"}>{quantity}</span>}
-
-                                <Button
-                                    className="border-0 w-25 fw-bold fs-3 d-flex justify-content-center align-items-center"
-                                    variant="outline-secondary"
-                                    onClick={handlePlusButton}>+</Button>
-                            </div>
-                            <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1 bg-white">
-                                <div className="bg-white h-50">
-                                    {cartItem.price &&
-                                        <div className="h5 mb-0 bg-white fw-bold w-100">
-                                            {`HK$${cartItem.price.toLocaleString(undefined, {minimumFractionDigits: 2})}`}
-                                        </div>}
+                            <div className="col-md-2 d-flex justify-content-center bg-white">
+                                <div className="bg-white">
+                                    <p className="small text-muted mb-4 pb-2 bg-white">Name</p>
+                                    <p className="lead fw-normal mb-0 bg-white">{cartItem?.name}</p>
                                 </div>
-
                             </div>
 
-                            <div className="col-md-1 col-lg-1 col-xl-1 text-end bg-white">
-                                <FontAwesomeIcon
-                                    className="trash-bin bg-white"
-                                    icon={faTrash} size="xl"
-                                    style={{color: "#ff0000"}}
-                                    onClick={deleteCartItem}/>
+                            <div className="col-md-2 d-flex justify-content-center bg-white">
+                                <div className="bg-white">
+                                    <p className="small text-muted mb-3 pb-2 bg-white">Quantity</p>
+                                    <div className="d-flex justify-content-center align-items-center bg-white">
+                                        <Button
+                                            className="border-0 p-2 fw-bold"
+                                            variant="outline-secondary"
+                                            onClick={handleMinusButton}>-</Button>
+                                        <p className="lead fw-normal mb-0 ms-2 me-2 bg-white">{quantity}</p>
+                                        <Button
+                                            className="border-0 p-2 fw-bold"
+                                            variant="outline-secondary"
+                                            onClick={handlePlusButton}>+</Button>
+                                    </div>
+
+                                </div>
                             </div>
-                            <div className="text-end fw-bold me-5 pe-2 bg-transparent text-danger">{warningText}</div>
+
+                            <div className="col-md-2 d-flex justify-content-center bg-white">
+                                <div className="bg-white">
+                                    <p className="small text-muted mb-4 pb-2 bg-white">Price</p>
+                                    <p className="lead fw-normal mb-0 bg-white">{cartItem?.price.toLocaleString(undefined,{style: "currency", currency: "HKD"})}</p>
+                                </div>
+                            </div>
+
+                            <div className="col-md-2 d-flex justify-content-center bg-white">
+                                <div className="bg-white">
+                                    <p className="small text-muted mb-4 pb-2 bg-white">Sub-Total</p>
+                                    <p className="lead fw-normal mb-0 bg-white">{cartItem && quantity && (cartItem.price * quantity).toLocaleString(undefined,{style: "currency", currency: "HKD"})}</p>
+                                </div>
+                            </div>
+
+                            <div className="col-md-2 d-flex justify-content-center bg-white">
+                                <div className="bg-white mt-5">
+                                    <FontAwesomeIcon
+                                        className="trash-bin bg-white"
+                                        icon={faTrash} size="xl"
+                                        style={{color: "#ff0000"}}
+                                        onClick={handleDeleteButton}/>
+                                </div>
+                            </div>
+
                         </div>
+
                     </div>
                 </div>
-
-                <div className="h5 bg-white fw-bold text-end me-5 mb-3 text-success">
-                    {`Subtotal: HK$${(cartItem.price * quantity).toLocaleString(undefined, {minimumFractionDigits: 2})}`}
+                <div className="text-end bg-white text-danger fw-bold">
+                    {warningText}
                 </div>
             </>
         }
     }
 
+    const handleCartItemListUpdate = () => {
+        if(cartItem) {
+            const updatedCartItemList = cartItemList.map((value) => {
+                if(value.pid === cartItem?.pid && cartItem) {
+                    return {
+                        ...value,
+                        cart_quantity: quantity
+                    }
+                }
+                else {
+                    return value;
+                }
+            })
+            setCartItemList(updatedCartItemList);
+        }
+    }
+
     useEffect(() => {
-        setCartItem(props.cartItemBase);
-        setQuantity(props.cartItemBase.cart_quantity)
-    },[])
+        handleCartItemListUpdate()
+    },[quantity, cartItemState])
 
     return (
         <>
