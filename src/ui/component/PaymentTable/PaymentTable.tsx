@@ -1,10 +1,28 @@
 import {TransactionDetailData} from "../../../data/dto/TransactionDetailData.ts";
+import {useNavigate, useParams} from "react-router-dom";
+import * as TransactionApi from "../../../api/TransactionApi.ts";
 
 type Props = {
     transactionDetailData: TransactionDetailData | undefined
 }
 
 export default function PaymentTable({transactionDetailData}:Props) {
+    const {transactionId} = useParams();
+    const navigate = useNavigate();
+
+    const handleCheckout = async () => {
+        try {
+            const responseStatus = await TransactionApi.updateTransaction(transactionId);
+            console.log(responseStatus);
+            const responseData = await TransactionApi.completeTransaction(transactionId);
+            console.log(responseData);
+            navigate("/thankyou")
+        }
+        catch (error) {
+            navigate("/error");
+        }
+    }
+
     const calculateTotal = () => {
         if(transactionDetailData) {
             return transactionDetailData.items.reduce((accumulator, value) => {
@@ -88,7 +106,7 @@ export default function PaymentTable({transactionDetailData}:Props) {
                         <div className="col-lg-4 col-xl-3 bg-white">
                             <div className="d-flex justify-content-between bg-white" style={{fontWeight: "500"}}>
                                 <p className="mb-2 bg-white">Subtotal</p>
-                                <p className="mb-2 bg-white">{calculateTotal().toLocaleString()}</p>
+                                <p className="mb-2 bg-white">{calculateTotal().toLocaleString(undefined, {style: "currency", currency: "HKD"})}</p>
                             </div>
 
                             <hr className="my-4"/>
@@ -96,12 +114,13 @@ export default function PaymentTable({transactionDetailData}:Props) {
                             <div className="d-flex justify-content-between mb-4 bg-white"
                                  style={{fontWeight: "500"}}>
                                 <p className="mb-2 bg-white">Total</p>
-                                <p className="mb-2 bg-white">{calculateTotal().toLocaleString()}</p>
+                                <p className="mb-2 bg-white">{calculateTotal().toLocaleString(undefined, {style: "currency", currency: "HKD"})}</p>
                             </div>
 
                             <button type="button" className="btn btn-primary btn-block btn-lg mt-5">
                                 <div className="d-flex justify-content-between bg-transparent">
-                                    <span className="bg-transparent">Checkout Here</span>
+                                    <span className="bg-transparent"
+                                          onClick={handleCheckout}>Checkout Here</span>
                                 </div>
                             </button>
 

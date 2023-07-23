@@ -15,7 +15,7 @@ export default function ShoppingCartPage () {
     const navigate = useNavigate();
 
     const renderCartItem = () => {
-        if(cartItemList) {
+        if(cartItemList && cartItemList.length > 0) {
             return cartItemList.map((cartItem) => (
                 <ShoppingCartItem
                     key={cartItem.pid}
@@ -32,7 +32,7 @@ export default function ShoppingCartPage () {
     }
 
     const renderProcessButton = () => {
-        if(cartItemList) {
+        if(cartItemList && cartItemList.length > 0) {
             return <div className="d-flex justify-content-end bg-white mb-5">
                 <button type="button"
                         className="btn btn-warning btn-lg"

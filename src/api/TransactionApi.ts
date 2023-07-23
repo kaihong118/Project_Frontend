@@ -1,6 +1,7 @@
 import * as FirebaseAuthService from "../authService/FirebaseAuthService.ts"
 import axios from "axios";
 import {TransactionDetailData} from "../data/dto/TransactionDetailData.ts";
+import {TransactionStatus} from "../data/dto/TransactionStatus.ts";
 
 const baseUrl = "http://localhost:8080";
 
@@ -33,3 +34,34 @@ export const getTransaction = async (transactionId: string | undefined) => {
         throw error;
     }
 }
+
+export const updateTransaction = async (transactionId: string | undefined) => {
+    try {
+        const accessToken = await FirebaseAuthService.getAccessToken();
+
+        if(accessToken && transactionId) {
+            const response = await axios.patch<TransactionStatus>(`${baseUrl}/transaction/${transactionId}/pay`, {}, { headers: {"Authorization" : `Bearer ${accessToken}`} });
+            return response.data;
+        }
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+export const completeTransaction = async (transactionId: string | undefined) => {
+    try {
+        const accessToken = await FirebaseAuthService.getAccessToken();
+
+        if(accessToken && transactionId) {
+            const response = await axios.patch<TransactionDetailData>(`${baseUrl}/transaction/${transactionId}/finish`, {}, { headers: {"Authorization" : `Bearer ${accessToken}`} });
+            return response.data;
+        }
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+

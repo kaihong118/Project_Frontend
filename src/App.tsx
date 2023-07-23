@@ -8,6 +8,7 @@ import {createContext, useEffect, useState} from "react";
 import {UserData} from "./data/UserData.ts";
 import * as FirebaseAuthService from "./authService/FirebaseAuthService.ts"
 import CheckoutPage from "./ui/page/CheckoutPage/CheckoutPage.tsx";
+import ThankyouPage from "./ui/page/ThankyouPage/ThankyouPage.tsx";
 
 const router = createHashRouter([
     {
@@ -30,17 +31,17 @@ const router = createHashRouter([
         path: "/checkout/:transactionId",
         element: <CheckoutPage/>
     },
-    // {
-    //     path: "/thankyou",
-    //     element: <ThankYou/>
-    // }
+    {
+        path: "/thankyou",
+        element: <ThankyouPage/>
+    },
     {
         path: "/error",
         element: <ErrorPage/>
     }
 ])
 
-export const loginUserContext = createContext<UserData | null | undefined>(undefined)
+export const loginUserContext = createContext<UserData | null | undefined>(undefined);
 
 export default function App() {
     const [loginUser, setLoginUser] = useState<UserData | null | undefined>(undefined);
