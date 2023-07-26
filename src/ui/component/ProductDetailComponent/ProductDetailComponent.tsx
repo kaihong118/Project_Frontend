@@ -1,5 +1,5 @@
 import Container from "react-bootstrap/Container";
-import {Button, Card, Col, Row} from "react-bootstrap";
+import {Alert, Button, Card, Col, Row} from "react-bootstrap";
 import anguirus from "../../../assets/Anguirus.png";
 import baragon from "../../../assets/Baragon.png"
 import destoroyah from "../../../assets/Destoroyah.png";
@@ -86,6 +86,7 @@ export default function ProductDetailComponent(props: Props) {
 
     const renderQuantity = () => {
         if(props.productDetailData?.stock) {
+            document.title = `Monster Universe - ${props.productDetailData.name}`
             return <div className="bg-white" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                 <div className="bg-white" style={{ display: 'flex', alignItems: 'center' }}>
                     <Button
@@ -154,9 +155,11 @@ export default function ProductDetailComponent(props: Props) {
                                         {props.productDetailData?.price && `HK$${props.productDetailData.price.toLocaleString(undefined, {minimumFractionDigits: 2})}`}
                                     </Card.Text>
                                     {renderQuantity()}
-                                    {isSuccess && <div className="text-end bg-transparent mt-3 fw-bold pe-2 text-success">
-                                        Item Added
-                                    </div>}
+                                    {isSuccess
+                                        && <Alert
+                                            variant={"warning"} className={"mt-3"}>
+                                        Item Added to Cart
+                                    </Alert>}
                                 </Card.Body>
                             </div>
                         </Col>

@@ -30,7 +30,7 @@ export default function ProductDetailPage () {
             return navigate("/error");
         }
 
-        fetchProductDetailData()
+        fetchProductDetailData();
         return () => {
             axios.CancelToken.source().cancel();
         }

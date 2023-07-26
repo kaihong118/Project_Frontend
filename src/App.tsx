@@ -38,6 +38,10 @@ const router = createHashRouter([
     {
         path: "/error",
         element: <ErrorPage/>
+    },
+    {
+        path: "*",
+        element: <ProductListPage/>
     }
 ])
 

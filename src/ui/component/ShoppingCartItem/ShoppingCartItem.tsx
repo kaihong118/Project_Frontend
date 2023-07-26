@@ -1,4 +1,4 @@
-import {Button} from "react-bootstrap";
+import {Alert, Button} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import React, {useEffect, useState} from "react";
@@ -65,6 +65,7 @@ export default function ShoppingCartItem ({cartItem, cartItemList, setCartItemLi
         }
         else {
             setWarningText("Stock Not Available");
+            setTimeout(() => (setWarningText("")), 2000)
         }
     }
 
@@ -168,9 +169,13 @@ export default function ShoppingCartItem ({cartItem, cartItemList, setCartItemLi
 
                     </div>
                 </div>
-                <div className="text-end bg-white text-danger fw-bold">
-                    {warningText}
-                </div>
+                {warningText
+                    && <div className={"d-flex justify-content-end bg-white me-5"}>
+                        <Alert
+                            variant={"danger"} className={"mt-3 w-25 d-flex justify-content-center align-items-center-center"}>
+                            {warningText}
+                        </Alert>
+                    </div>}
             </>
         }
     }

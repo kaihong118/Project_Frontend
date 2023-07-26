@@ -1,7 +1,7 @@
 import NavBar from "../../component/NavBar/NavBar.tsx";
 import Footer from "../../component/Footer/Footer.tsx";
 import "./ShoppingCartPage.css"
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {GetCartItemData} from "../../../data/dto/GetCartItemData.ts";
 import * as CartItemApi from "../../../api/CartItemApi.ts"
 import * as TransactionApi from "../../../api/TransactionApi.ts"
@@ -9,10 +9,12 @@ import axios from "axios";
 import ShoppingCartItem from "../../component/ShoppingCartItem/ShoppingCartItem.tsx";
 import {useNavigate} from "react-router-dom";
 import {TransactionDetailData} from "../../../data/dto/TransactionDetailData.ts";
+import {loginUserContext} from "../../../App.tsx";
 
 export default function ShoppingCartPage () {
     const [cartItemList, setCartItemList] = useState<GetCartItemData[] | undefined>(undefined);
     const navigate = useNavigate();
+    const loginUser = useContext(loginUserContext)
 
     const renderCartItem = () => {
         if(cartItemList && cartItemList.length > 0) {
@@ -88,14 +90,14 @@ export default function ShoppingCartPage () {
     }
 
     useEffect ( () => {
-        setTimeout(() => {
-        fetchCartItemData();
-        }, 3000)
+        if(loginUser) {
+            fetchCartItemData();
+        }
 
         return () => {
             axios.CancelToken.source().cancel();
         }
-    },[])
+    },[loginUser])
 
     return (
         <>

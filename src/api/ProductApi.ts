@@ -16,8 +16,23 @@ export const getAllProduct = async () => {
 }
 export const getProductByPid = async (productId:string | undefined) => {
     try {
-        const response = await axios.get<ProductDetailData>(`${baseUrl}/public/product/${productId}`);
-        return response.data ;
+        if(productId) {
+            const response = await axios.get<ProductDetailData>(`${baseUrl}/public/product/${productId}`);
+            return response.data ;
+        }
+    }
+    catch(error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+export const getProductBySearchText = async (searchText:string | undefined) => {
+    try {
+        if(searchText) {
+            const response = await axios.get<ProductListData[]>(`${baseUrl}/public/product/search/${searchText}`);
+            return response.data ;
+        }
     }
     catch(error) {
         console.error(error);
