@@ -75,7 +75,7 @@ export default function ShoppingCartPage () {
     const calculateTotal = () => {
         if(cartItemList) {
             return cartItemList.reduce((accumulator, cartItem) => {
-                return accumulator + cartItem.price * cartItem.cart_quantity
+                return accumulator + cartItem.price * (cartItem.cart_quantity ?? 0);
             },0);
         }
         else {

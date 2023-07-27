@@ -2,8 +2,9 @@ import axios from "axios";
 import {AddCartItemData} from "../data/dto/AddCartItemData.ts";
 import * as FirebaseAuthService from "../authService/FirebaseAuthService.ts"
 import {GetCartItemData} from "../data/dto/GetCartItemData.ts";
+import getEnvConfig from "../Config/EnvConfig.ts";
 
-const baseUrl = "http://localhost:8080";
+const baseUrl = getEnvConfig().baseUrl;
 
 export const addCartItem = async (productId: number, quantity: number) => {
     try {

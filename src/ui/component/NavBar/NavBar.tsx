@@ -96,12 +96,14 @@ export default function NavBar () {
                         </Navbar.Brand>
                     </Link>
 
-                    <Link to={"/"} className="bg-transparent text-decoration-none me-auto">
                         <Nav
-                            className="bg-transparent">
-                            <Nav.Link>Home</Nav.Link>
+                            className="bg-transparent me-auto">
+                            <Link to={"/"}
+                                  className="bg-transparent text-decoration-none text-white">
+                            Home
+                            </Link>
                         </Nav>
-                    </Link>
+
 
                     <Form
                         className="d-flex justify-content-center bg-transparent">
